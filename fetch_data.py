@@ -22,7 +22,7 @@ def fetch_cards():
 
 
 def get_cards_by_set():
-    temp_sets = Config.custom_sets + Config.set_2003_list
+    temp_sets = Config.pre_2003_list + Config.set_2003_list
     return [
         load_all_cards_text(f"{Config.data_dir}/csv/{set_name}.csv")
         for set_name in temp_sets
@@ -144,7 +144,7 @@ def fetch_card_image(row, out_dir=None, size='png'):
 def main():
     # Query card data by each set, then merge them together
     #for set_name in Config.all_set_list:
-    sets = Config.custom_sets + Config.set_2003_list
+    sets = Config.pre_2003_list + Config.set_2003_list
     for set_name in sets:
         csv_name = '%s/csv/%s.csv' % (Config.data_dir, set_name)
         print(csv_name)
