@@ -13,6 +13,22 @@ Scryfall API doc is available at: https://scryfall.com/docs/api
 """
 
 
+def fetch_cards():
+    cards_by_set = get_cards_by_set()
+    cards = pd.concat(cards_by_set, sort=True)
+    cards.reset_index(drop=True, inplace=True)
+    cards.drop('Unnamed: 0', axis=1, inplace=True, errors='ignore')
+    return cards
+
+
+def get_cards_by_set():
+    temp_sets = Config.custom_sets + Config.set_2003_list
+    return [
+        load_all_cards_text(f"{Config.data_dir}/csv/{set_name}.csv")
+        for set_name in temp_sets
+    ]
+
+
 def fetch_all_cards_text(url='https://api.scryfall.com/cards/search?q=layout:normal+format:modern+lang:en+frame:2003',
                          csv_name=None):
     """
@@ -127,7 +143,9 @@ def fetch_card_image(row, out_dir=None, size='png'):
 
 def main():
     # Query card data by each set, then merge them together
-    for set_name in Config.all_set_list:
+    #for set_name in Config.all_set_list:
+    sets = Config.custom_sets + Config.set_2003_list
+    for set_name in sets:
         csv_name = '%s/csv/%s.csv' % (Config.data_dir, set_name)
         print(csv_name)
         if not os.path.isfile(csv_name):
