@@ -1,7 +1,5 @@
-from .settings import CARD_MASK_PATH, DATA_DIR, DARKNET_DIR, PICKLE_PATH
+from settings import CARD_MASK_PATH, DATA_DIR, DARKNET_DIR, PICKLE_PATH
 
-
-PICKLE_PATH = PICKLE_PATH
 
 class Config:
     """Note, current pickle uses pre_2003_list and set_2003_list together."""

@@ -1,14 +1,11 @@
-import argparse
 import cv2
 import imagehash as ih
 import numpy as np
-import os
 import pandas as pd
 from PIL import Image
+import ast
 
-from mtg_card_detector.image_processing.hashing import fetch_cards_pool_with_hashed_images
-from mtg_card_detector.config import PICKLE_PATH
-from mtg_card_detector.fetch_data import fetch_cards
+#  from mtg_card_detector.mtg_card_detector import main, _invalid_path, command_line_args
 
 
 def order_points(pts):
@@ -162,8 +159,7 @@ def _fetch_candidate_contours(contours, hierarchy, size_thresh):
     return contours_rect
 
 
-def detect_frame(image, card_pool, hash_size=32, size_thresh=10000, out_path=None,
-                 display=True, debug=False):
+def detect_frame(image, card_pool, hash_size=32, size_thresh=10000):
     """Identify all cards in the input frame, display or save the frame if needed
 
     Parameters
@@ -203,27 +199,25 @@ def detect_frame(image, card_pool, hash_size=32, size_thresh=10000, out_path=Non
 
         card_name = card['name']
         card_set = card['set']
+        card_label = card_name
         detected_cards.append((card_name, card_set))
 
-        _write_then_save_image(card_name, contour, image_result, rectangle_points)
-        _write_then_save_card_image(card_image, card_name, n)
-
-    if out_path is not None:
-        cv2.imwrite('images/output/last_rendered_image.jpg', image_result.astype(np.uint8))
+        _write_then_save_image(card_label, contour, image_result, rectangle_points)
+        _write_then_save_card_image(card_image, card_name, card_label, n)
     return detected_cards, image_result
 
 
-def _write_then_save_card_image(card_image, card_name, n):
-    cv2.putText(card_image, card_name, (0, 20),
+def _write_then_save_card_image(card_image, card_name, card_label, n):
+    cv2.putText(card_image, card_label, (0, 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
-    cv2.imwrite(f'test_file/output/{card_name}_{n}.jpg', card_image)
+    cv2.imwrite(f'images/output/{card_name}_{n}.jpg', card_image)
 
 
-def _write_then_save_image(card_name, contour, image_result, rectangle_points):
+def _write_then_save_image(card_label, contour, image_result, rectangle_points):
     cv2.drawContours(image_result, [contour], -1, (0, 255, 0), 2)
     cv2.putText(
         image_result,
-        card_name,
+        card_label,
         _minumum_width_by_minimum_height(rectangle_points),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.5,
@@ -262,81 +256,3 @@ def create_and_flatten_perceptual_hash_from_card_image(card_image, hash_size):
 
 def _transform_from_rectangular_card_to_image(transformed_image):
     return Image.fromarray(transformed_image.astype('uint8'), 'RGB')
-
-
-
-def main(command_line_args):
-    if _invalid_path(command_line_args.in_path):
-        return _invalid_path_message(os.path.abspath(command_line_args.in_path))
-    out_path = _parse_path(command_line_args)
-    if _invalid_path(PICKLE_PATH):
-        cards_df = fetch_cards()  # create own pickling/hashing module later. for now, this is fine
-        fetch_cards_pool_with_hashed_images(cards_df, save_to=PICKLE_PATH)
-
-    card_pool = pd.read_pickle(PICKLE_PATH)
-    card_hk = f'card_hash_{command_line_args.hash_size}'
-    card_pool = card_pool[
-        ['name', 'set', 'collector_number', card_hk]
-    ]
-    card_pool[card_hk] = card_pool[card_hk].apply(lambda x: x.hash.flatten())
-
-    img = cv2.imread(command_line_args.in_path)
-    detect_frame(
-        img,
-        card_pool,
-        hash_size=command_line_args.hash_size,
-        out_path=out_path,
-        display=command_line_args.display,
-        debug=command_line_args.debug
-    )
-
-
-def _parse_path(command_line_args):
-    if not command_line_args.out_path:
-        return
-    f_name = os.path.split(command_line_args.in_path)[1]
-    return '%s/%s.avi' % (command_line_args.out_path, f_name[:f_name.find('.')])
-
-
-def create_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--in', dest='in_path', help='Path of the input file. For webcam, leave itblank',
-                        type=str)
-    parser.add_argument('-o', '--out', dest='out_path', help='Path of the output directory to save the result',
-                        type=str)
-    parser.add_argument('-hs', '--hash_size', dest='hash_size',
-                        help='Size of the hash for pHash algorithm', type=int, default=16)
-    parser.add_argument('-dsp', '--display', dest='display', help='Display the result', action='store_true',
-                        default=False)
-    parser.add_argument('-dbg', '--debug', dest='debug', help='Enable debug mode', action='store_true', default=False)
-    return parser
-
-
-def _invalid_path(path):
-    return not os.path.isfile(path)
-
-
-def _invalid_path_message(path):
-    print('Input file does not exist at path specified {path}')  # super serious error logging
-
-
-if __name__ == '__main__':
-    parser = create_parser()
-    args = parser.parse_args()
-    if not args.display and args.out_path is None:
-        print('The program isn\'t displaying nor saving any output file. Please change the setting and try again.')
-        exit()
-    if args.in_path is None:
-        print('No input file.')
-        exit()
-    if _invalid_path(args.in_path):
-        print('invalid input file')
-        exit()
-    main(args)
-
-
-# To identify the card from the card image, perceptual hashing (pHash) algorithm is used
-# Perceptual hash is a hash string built from features of the input medium. If two media are similar
-# (ie. has similar features), their resulting pHash value will be very close.
-# Using this property, the matching card for the given card image can be found by comparing pHash of
-# all cards in the database, then finding the card that results in the minimal difference in pHash value.
