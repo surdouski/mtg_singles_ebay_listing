@@ -3,6 +3,8 @@ import imagehash as ih
 import numpy as np
 import pandas as pd
 from PIL import Image
+import decimal
+import json
 import ast
 
 #  from mtg_card_detector.mtg_card_detector import main, _invalid_path, command_line_args
@@ -199,7 +201,8 @@ def detect_frame(image, card_pool, hash_size=32, size_thresh=10000):
 
         card_name = card['name']
         card_set = card['set']
-        card_label = card_name
+        card_price_usd = extract_card_price(card)
+        card_label = f"{card_name}, {card_set}, {card_price_usd}"
         detected_cards.append((card_name, card_set))
 
         _write_then_save_image(card_label, contour, image_result, rectangle_points)
@@ -207,9 +210,20 @@ def detect_frame(image, card_pool, hash_size=32, size_thresh=10000):
     return detected_cards, image_result
 
 
+def extract_card_price(card):
+    prices = card.get('prices')
+    if not prices:
+        return 'price unknown'
+    if isinstance(prices, str):
+        _p = prices.replace("\'", "\"").replace("None", "null")     # this is needed due to unusual
+        prices = json.loads(_p)                                     # response types from api
+    usd_price = decimal.Decimal(prices['usd'])
+    return usd_price
+
+
 def _write_then_save_card_image(card_image, card_name, card_label, n):
     cv2.putText(card_image, card_label, (0, 20),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
+                cv2.FONT_HERSHEY_SIMPLEX, 0.4, (143, 0, 255), 2)
     cv2.imwrite(f'images/output/{card_name}_{n}.jpg', card_image)
 
 
@@ -220,8 +234,8 @@ def _write_then_save_image(card_label, contour, image_result, rectangle_points):
         card_label,
         _minumum_width_by_minimum_height(rectangle_points),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.5,
-        (255, 255, 255),
+        0.4,
+        (143, 0, 255),
         2
     )
 

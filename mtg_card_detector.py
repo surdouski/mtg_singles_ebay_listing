@@ -24,7 +24,7 @@ def run_from_command_line(command_line_args):
     card_pool = pd.read_pickle(command_line_args.pickle_path)
     card_hk = f'card_hash_{command_line_args.hash_size}'
     card_pool = card_pool[
-        ['name', 'set', 'collector_number', card_hk]
+        ['name', 'set', 'collector_number', card_hk, 'prices']
     ]
     card_pool[card_hk] = card_pool[card_hk].apply(lambda x: x.hash.flatten())
 
