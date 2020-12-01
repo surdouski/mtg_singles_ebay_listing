@@ -10,3 +10,4 @@ DATA_DIR = os.getenv('DATA_DIR')
 DARKNET_DIR = os.getenv('DARKNET_DIR')
 
 PICKLE_PATH = os.getenv('PICKLE_PATH')
+IMAGE_PATH = os.getenv('IMAGE_PATH')
