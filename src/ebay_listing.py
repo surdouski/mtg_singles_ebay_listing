@@ -1,8 +1,9 @@
-from settings import PAYPAL_EMAIL, COUNTRY, POSTAL_CODE
-from fetch_data import fetch_card_price
-
 from ebaysdk.trading import Connection as Trading
 from ebaysdk.exception import ConnectionError
+
+from settings import PROJECT_ROOT, PAYPAL_EMAIL, COUNTRY, POSTAL_CODE
+
+from .fetch_data import fetch_card_price
 
 
 class CardListingObject:
@@ -86,7 +87,7 @@ class CardListingObject:
         'ebaysdk' on github.
         """
 
-        self._api = Trading(config_file='ebay.yaml', domain='api.sandbox.ebay.com')
+        self._api = Trading(config_file=f'{PROJECT_ROOT}/ebay.yaml', domain='api.sandbox.ebay.com')
         return self._api
 
     def upload_image(self):

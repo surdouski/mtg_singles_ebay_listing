@@ -1,15 +1,14 @@
 import ast
-
 import cv2
 import imagehash as ih
 import numpy as np
 import pandas as pd
 from PIL import Image
 
-
-from config import Config
-from fetch_data import get_valid_filename
-from fetch_data import fetch_card_image as _fetch_card_image_from_web
+from .config import Config
+from settings import DATA_DIR
+from .fetch_data import get_valid_filename
+from .fetch_data import fetch_card_image as _fetch_card_image_from_web
 
 
 def fetch_cards_pool_with_hashed_images(card_pool, save_to=None, _hash_size=None):
@@ -97,7 +96,7 @@ def create_empty_cards_pool(card_pool, hash_sizes):
 def fetch_card_image_from_web(card_image, card_info):
     _fetch_card_image_from_web(
         card_info,
-        out_dir=f"{Config.data_dir}/card_img/png/{card_info['set']}"
+        out_dir=f"{DATA_DIR}/card_img/png/{card_info['set']}"
     )
     return cv2.imread(card_image_path(card_info))
 
@@ -107,7 +106,7 @@ def fetch_card_image_from_database(card_info):
 
 
 def card_image_path(card_info):
-    return f"{Config.data_dir}/card_img/png/{card_info['set']}/" \
+    return f"{DATA_DIR}/card_img/png/{card_info['set']}/" \
                  f"{card_info['collector_number']}_{get_valid_filename(card_info['name'])}"
 
 

@@ -5,14 +5,15 @@ import cv2
 import pandas as pd
 import tkinter as tk
 
-from graphical_ui import ImageDetailsConfirmation
-from settings import PICKLE_PATH, IMAGE_PATH
-from fetch_data import fetch_cards
-from hashing import fetch_cards_pool_with_hashed_images
-from image_matcher import perform_card_detection
+from settings import PROJECT_ROOT, PICKLE_PATH, IMAGE_PATH
+
+from src.graphical_ui import ImageDetailsConfirmation
+from src.fetch_data import fetch_cards
+from src.hashing import fetch_cards_pool_with_hashed_images
+from src.image_matcher import perform_card_detection
 
 
-def run_from_command_line():
+def main():
     card_pool = retrieve_from_database_and_flatten_results()
     input_image = cv2.imread(input_path)
     ebay_listing_objects = perform_card_detection(input_image, input_path, output_path, card_pool, hash_size=hash_size)
@@ -113,7 +114,7 @@ if __name__ == '__main__':
 
     input_path = _get_valid_path_or_exit(command_line_args.in_path, 'input path')
     output_path = _get_valid_dir_or_exit(command_line_args.out_path, 'output path')
+    pickle_path = command_line_args.pickle_path
     hash_size = _get_valid_hash_size_or_exit(command_line_args.hash_size)
 
-    run_from_command_line()
-
+    main()

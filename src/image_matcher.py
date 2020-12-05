@@ -5,7 +5,7 @@ import pandas as pd
 from PIL import Image
 import ntpath
 
-from ebay_listing import CardListingObject
+from .ebay_listing import CardListingObject
 
 
 def order_points(pts):

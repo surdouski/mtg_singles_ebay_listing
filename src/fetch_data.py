@@ -6,7 +6,8 @@ import pandas as pd
 import re
 from urllib import request
 
-from config import Config
+from .config import Config
+from settings import DATA_DIR
 
 """
 Note: All codes in this file relies on Scryfall API to aggregate card database and their images.
@@ -30,7 +31,7 @@ def fetch_cards():
 def get_cards_by_set():
     temp_sets = Config.pre_2003_list + Config.set_2003_list
     return [
-        load_all_cards_text(f"{Config.data_dir}/csv/{set_name}.csv")
+        load_all_cards_text(f"{DATA_DIR}/csv/{set_name}.csv")
         for set_name in temp_sets
     ]
 
