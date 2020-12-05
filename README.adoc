@@ -6,13 +6,19 @@ v1.0, 2020-12
 A program for lazy ebay listings of your MTG Singles.
 
 == Setup
+IMPORTANT => EBAY API KEYS/TOKENS ARE REQUIRED FOR USE
+
 Clone the github directory and make sure to add your own
 ebay.yaml and .env files in the root directory with
 the required details.
 
 .ebay.yaml
 ----
+# create a ebay.yaml file for ebay credentials (use ebay-template.yaml
+#   by filling out missing information and renaming to ebay.yaml)
 # for more information on how to setup yaml, please visit
+# 'ebaysdk' on github
+
 name: ebay_api_config
 
 api.sandbox.ebay.com:
@@ -32,12 +38,20 @@ api.ebay.com:
 
 ..env
 ----
-# create a .env file for python-dotenv
-# only these 3 fields are needed
+# create a .env file for python-dotenv (use env-template.txt by
+#   filling out missing information and renaming to .env)
 
-PAYPAL_EMAIL='your.email@probably_gmail.com'
-COUNTRY='US'
-POSTAL_CODE='00000'  # [your postal/zip code you ship from]
+## PICKLE_PATH and IMAGE_PATH do not need to be changed ##
+PICKLE_PATH='/hashed_card_pools/retro_pool.pck'
+IMAGE_PATH='/images/output/'
+##
+
+## NEED TO BE CHANGED ##
+DATA_DIR='/media/unix_user/mtg_directory'       # absolute path
+PAYPAL_EMAIL='your.email@probably_gmail.com'    # for ebay config
+COUNTRY='US'                                    # for ebay config
+POSTAL_CODE='00000'  # [your postal/zip]        # for ebay config
+##
 ----
 
 Once the __ebay.yaml__ and __.env__ files are setup, you can run using the following:
