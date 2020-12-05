@@ -3,7 +3,7 @@ MTG Singles Ebay Listing
 Michael Surdouski <michael.surdouski@gmail.com>
 v1.0, 2020-12
 
-A program for lazy ebay listings of your MTG Singles.
+A program for lazy ebay listings of your MTG Singles. (tests coming soon...)
 
 == Setup
 IMPORTANT => EBAY API KEYS/TOKENS ARE REQUIRED FOR USE
