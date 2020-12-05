@@ -1,11 +1,7 @@
-from settings import CARD_MASK_PATH, DATA_DIR, DARKNET_DIR, PICKLE_PATH
-
-
 class Config:
     """Note, current pickle uses pre_2003_list and set_2003_list together."""
 
     pre_2003_list = [
-        # Pre-2003 sets
         'ons', 'wc02', 'pcy', 'jud', 'tor', 'pal02', 'pr2', 'g02', 'f02', 'dkm', 'ody', 'wc01', 'apc',
         '7ed', 'pls', 'pal01', 'g01', 'f01', 'mpr', 'inv', 'btd', 'wc00', 's00', 'nem', 'pelp', 'pal00',
         'fnm', 'g00', 'psus', 'brb', 'mmq', 'pwos', 'pwor', 'wc99', 'pgru', 'ptk', 'uds', '6ed',
@@ -16,14 +12,13 @@ class Config:
         # removed sets: 'fbb', 'prm', 's99', 'usg', 'p02', 'exo', 'pred', 'rin', 'ren', '4bb'
     ]
 
-    # List of all black-bordered cards printed from 8th edition and onwards (8ed and 9ed are white-bordered)
-    # Core & expansion sets with 2003 frame
     set_2003_list = [
         'mrd', 'dst', '5dn', 'chk', 'bok', 'sok', 'rav', 'gpt', 'dis', 'csp', 'tsp', 'plc', 'fut', '10e',
         'mor', 'shm', 'eve', 'ala', 'con', 'arb', 'm10', 'zen', 'wwk', 'roe', 'm11', 'som', 'mbs',
         'nph', 'm12', 'isd', 'dka', 'avr', 'm13', 'rtr', 'gtc', 'dgm', 'm14', 'ths', 'bng', 'jou'
     ]
 
+    """ UNUSED *** => if you want to use any of these sets from 2015 or past, you till need to build your own pickle
     # Core & expansion sets with 2015 frame
     set_2015_list = [
         'm15', 'ktk', 'frf', 'dtk', 'bfz', 'ogw', 'soi', 'emn', 'kld', 'aer', 'akh', 'hou', 'xln', 'rix', 'dom'
@@ -39,10 +34,6 @@ class Config:
     ]
     # Supplemental sets
     set_sup_list = ['hop', 'arc', 'pc2', 'cns', 'cn2', 'e01', 'e02', 'bbd']
-    all_set_list = set_2003_list + set_2015_list + set_box_list + set_sup_list + pre_2003_list
+    """
 
     TEMP_SETS = pre_2003_list + set_2003_list
-
-    card_mask_path = CARD_MASK_PATH
-    data_dir = DATA_DIR
-    darknet_dir = DARKNET_DIR

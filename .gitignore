@@ -31,3 +31,4 @@ CMakeLists.txt
 .idea/
 __pycache__/
 /.env
+/ebay.yaml

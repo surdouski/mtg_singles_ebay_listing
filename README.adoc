@@ -1,0 +1,62 @@
+MTG Singles Ebay Listing
+========================
+Michael Surdouski <michael.surdouski@gmail.com>
+v1.0, 2020-12
+
+A program for lazy ebay listings of your MTG Singles.
+
+== Setup
+Clone the github directory and make sure to change the
+settings in the ebay.yaml as well as create a .env with
+the required details.
+
+.ebay.yaml
+----
+# for more information on how to setup yaml, please visit
+name: ebay_api_config
+
+api.sandbox.ebay.com:
+    compatibility: 719
+    appid: ENTER_YOUR_APPID_HERE
+    certid: ENTER_YOUR_CERTID_HERE
+    devid: ENTER_YOUR_DEVID_HERE
+    token: ENTER_YOUR_TOKEN_HERE
+
+api.ebay.com:
+    compatibility: 719
+    appid: ENTER_YOUR_APPID_HERE
+    certid: ENTER_YOUR_CERTID_HERE
+    devid: ENTER_YOUR_DEVID_HERE
+    token: ENTER_YOUR_TOKEN_HERE
+----
+
+..env
+----
+# create a .env file for python-dotenv
+# only these 3 fields are needed
+
+PAYPAL_EMAIL='your.email@probably_gmail.com'
+COUNTRY='US'
+POSTAL_CODE='00000'  # [your postal/zip code you ship from]
+----
+
+Once the __ebay.yaml__ and __.env__ files are setup, you can run using the following:
+
+----
+python3 mtg_singles_ebay_listing.py -i path/to/input/file [-o path/to/output/dir -p path/to/pickle/file -hs hash_size(16 or 32)]
+----
+
+* -i path/to/input/file : the location of the target input image
+* -o path/to/output/dir : where cropped images are temporarily stored
+* -p path/to/pickle/file : if you want to change the pickle (by rebuilding the model, you will either need to set the new path here or change it in your .env file)
+
+Example
+-------
+.Example input image
+image:https://i.imgur.com/lXhcZas.png[width=800px]
+
+.Example output (1 of 12)
+image:https://i.imgur.com/9W6hnvr.png[width=800px]
+
+.Example ebay listing after "confirm" (1 of 12)
+image:https://i.imgur.com/f0Nt1wg.png[ebay listing]
