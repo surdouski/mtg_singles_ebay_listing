@@ -6,8 +6,8 @@ v1.0, 2020-12
 A program for lazy ebay listings of your MTG Singles.
 
 == Setup
-Clone the github directory and make sure to change the
-settings in the ebay.yaml as well as create a .env with
+Clone the github directory and make sure to add your own
+ebay.yaml and .env files in the root directory with
 the required details.
 
 .ebay.yaml
