@@ -1,9 +1,9 @@
 PICKLE_PATH='/hashed_card_pools/retro_pool.pck'
 IMAGE_PATH='/images/output/'
 
-DATA_DIR=
+DATA_DIR='/abs/path/to/fetched/images/'
 
 
-PAYPAL_EMAIL='michael.surdouski@gmail.com'
+PAYPAL_EMAIL='your.email@gmail.com'
 COUNTRY='US'
-POSTAL_CODE='01701'
+POSTAL_CODE='00000'
