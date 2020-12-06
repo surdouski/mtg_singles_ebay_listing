@@ -1,3 +1,6 @@
+import urllib
+from time import sleep
+
 import requests
 import ast
 import json
@@ -5,6 +8,8 @@ import os
 import pandas as pd
 import re
 from urllib import request
+
+from requests import HTTPError
 
 from .config import Config
 from settings import DATA_DIR
@@ -16,8 +21,13 @@ Scryfall API doc is available at: https://scryfall.com/docs/api
 
 
 def fetch_card_price(card_id):
-    response = requests.get(f'https://api.scryfall.com/cards/{card_id}')
-    return float(response.json().get('prices').get('usd'))
+    try:
+        response = requests.get(f'https://api.scryfall.com/cards/{card_id}')
+        if response.json().get('prices').get('usd') is None:
+            return None
+        return float(response.json().get('prices').get('usd'))
+    except HTTPError as http_err:
+        return None
 
 
 def fetch_cards():
@@ -47,7 +57,15 @@ def fetch_all_cards_text(url='https://api.scryfall.com/cards/search?q=layout:nor
     has_more = True
     cards = []
     while has_more:
-        res_file_dir, http_message = request.urlretrieve(url)
+        response = False
+        while not response:
+            try:
+                res_file_dir, http_message = request.urlretrieve(url)
+                response = True
+            except Exception:
+                sleep(5)
+                pass
+
         with open(res_file_dir, 'r') as res_file:
             res_json = json.loads(res_file.read())
             cards += res_json['data']
@@ -109,7 +127,7 @@ def fetch_card_image(row, out_dir=None, size='png'):
     :return:
     """
     if out_dir is None:
-        out_dir = '%s/card_img/%s/%s' % (Config.data_dir, size, row['set'])
+        out_dir = '%s/card_img/%s/%s' % (DATA_DIR, size, row['set'])
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -140,16 +158,16 @@ def fetch_card_image(row, out_dir=None, size='png'):
 
 
 def main():
-    sets = Config.pre_2003_list + Config.set_2003_list
+    sets = Config.TEMP_SETS
     for set_name in sets:
-        csv_name = '%s/csv/%s.csv' % (Config.data_dir, set_name)
+        csv_name = '%s/csv/%s.csv' % (DATA_DIR, set_name)
         if not os.path.isfile(csv_name):
             df = fetch_all_cards_text(url='https://api.scryfall.com/cards/search?q=set:%s+lang:en' % set_name,
                                       csv_name=csv_name)
         else:
             df = load_all_cards_text(csv_name)
         df.sort_values('collector_number')
-        fetch_all_cards_image(df, out_dir='%s/card_img/png/%s' % (Config.data_dir, set_name))
+        fetch_all_cards_image(df, out_dir='%s/card_img/png/%s' % (DATA_DIR, set_name))
     return
 
 

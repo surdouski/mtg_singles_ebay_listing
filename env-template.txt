@@ -1,4 +1,4 @@
-PICKLE_PATH='/hashed_card_pools/retro_pool.pck'
+PICKLE_PATH='/hashed_card_pools/combined_2.pck'
 IMAGE_PATH='/images/output/'
 
 DATA_DIR='/abs/path/to/fetched/images/'

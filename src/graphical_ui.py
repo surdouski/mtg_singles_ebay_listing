@@ -1,7 +1,7 @@
 import sys
 
 from tkinter.ttk import Frame, Button, Label, Style
-from tkinter import BOTH, RIGHT, TOP
+from tkinter import BOTH, RIGHT, LEFT, TOP, E, Canvas, NW
 from PIL import ImageTk, Image
 
 
@@ -14,17 +14,18 @@ class ImageDetailsConfirmation(Frame):
 
         self.master.title("Image Details Confirmation")
         self.style = Style()
-        self.style.theme_use("default")
+        self.style.theme_use("classic")
         self.pack(fill=BOTH, expand=True)
         self._load_image()
         self.init_ui()
 
     def init_ui(self):
-        image_area = ImageTk.PhotoImage(self.image)
-        label = Label(self, image=image_area)
+        card_image = ImageTk.PhotoImage(self._image)
+        image = Label(self, image=card_image)
         label_text = Label(self, text=f'Name: {self.card.card_name}, Set: {self.card.card_set}, Price: ${self.card.price}')
-        label.image = image_area
-        label.pack(side=TOP)
+
+        image.image = card_image
+        image.pack(side=TOP)
         label_text.pack(side=TOP)
 
         confirm_button = Button(self, text="Confirm", command=self._confirm_then_quit)
@@ -35,7 +36,7 @@ class ImageDetailsConfirmation(Frame):
 
     def _load_image(self):
         try:
-            self.image = Image.open(self.card.path_to_card_image)
+            self._image = Image.open(self.card.path_to_card_image).resize((300, 400), resample=0)
         except IOError:
             print("Unable to load card image.")
             sys.exit(1)

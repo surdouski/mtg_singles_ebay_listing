@@ -42,7 +42,7 @@ api.ebay.com:
 #   filling out missing information and renaming to .env)
 
 ## PICKLE_PATH and IMAGE_PATH do not need to be changed ##
-PICKLE_PATH='/hashed_card_pools/retro_pool.pck'
+PICKLE_PATH='/hashed_card_pools/combined_2.pck'
 IMAGE_PATH='/images/output/'
 ##
 
@@ -53,6 +53,8 @@ COUNTRY='US'                                    # for ebay config
 POSTAL_CODE='00000'  # [your postal/zip]        # for ebay config
 ##
 ----
+
+(note: pickle's are not 100% updated yet, give it another day before i have it all hashed)
 
 Once the __ebay.yaml__ and __.env__ files are setup, you can run using the following:
 
@@ -67,10 +69,40 @@ python3 mtg_singles_ebay_listing.py -i path/to/input/file [-o path/to/output/dir
 Example
 -------
 .Example input image
-image:https://i.imgur.com/lXhcZas.png[width=800px]
+image:https://i.imgur.com/lXhcZas.png[example_1_input]
 
 .Example output (1 of 12)
-image:https://i.imgur.com/9W6hnvr.png[width=800px]
+image:https://i.imgur.com/9W6hnvr.png[example_1_output]
 
 .Example ebay listing after "confirm" (1 of 12)
-image:https://i.imgur.com/f0Nt1wg.png[ebay listing]
+image:https://i.imgur.com/f0Nt1wg.png[example_1_listing]
+
+
+Example 2
+---------
+.Example input image
+image:https://i.imgur.com/mArmiKW.png[example_2_input]
+
+.Example output (1 of 4)
+image:https://i.imgur.com/hh7ai7I.png[example_2_output_1]
+
+.Example output (2 of 4)
+image:https://i.imgur.com/9ANxgbF.png[example_2_output_2]
+
+.Example output (3 of 4)
+image:https://i.imgur.com/DnNZgLv.png[example_2_output_3]
+
+.Example output (4 of 4)
+image:https://i.imgur.com/aMfWz1L.png[example_2_output_4]
+
+.Example automatic ebay listing (1 of 4)
+image:http://i.imgur.com/0qF1lDk.png[example_2_listing_1]
+
+.Example automatic ebay listing (2 of 4)
+image:http://i.imgur.com/StHUkBG.png[example_2_listing_2]
+
+.Example automatic ebay listing (3 of 4)
+image:http://i.imgur.com/Bn8Y2UZ.png[example_2_listing_3]
+
+.Example automatic ebay listing (4 of 4)
+image:http://i.imgur.com/M23cygM.png[example_2_listing_4]

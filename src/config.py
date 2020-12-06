@@ -18,7 +18,7 @@ class Config:
         'nph', 'm12', 'isd', 'dka', 'avr', 'm13', 'rtr', 'gtc', 'dgm', 'm14', 'ths', 'bng', 'jou'
     ]
 
-    """ UNUSED *** => if you want to use any of these sets from 2015 or past, you till need to build your own pickle
+    """ UNUSED *** => if you want to use any of these sets from 2015 or past, you till need to build your own pickle"""
     # Core & expansion sets with 2015 frame
     set_2015_list = [
         'm15', 'ktk', 'frf', 'dtk', 'bfz', 'ogw', 'soi', 'emn', 'kld', 'aer', 'akh', 'hou', 'xln', 'rix', 'dom'
@@ -34,6 +34,6 @@ class Config:
     ]
     # Supplemental sets
     set_sup_list = ['hop', 'arc', 'pc2', 'cns', 'cn2', 'e01', 'e02', 'bbd']
-    """
+    """"""
 
-    TEMP_SETS = pre_2003_list + set_2003_list
+    TEMP_SETS = set_2015_list + set_box_list + set_sup_list

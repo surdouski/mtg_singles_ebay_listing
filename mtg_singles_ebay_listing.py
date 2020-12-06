@@ -40,6 +40,7 @@ def confirm_or_reject_listing(card):
 
 def flatten_hash_array(card_pool):
     card_hk = f'card_hash_{hash_size}'
+    print(card_hk)
     card_pool = card_pool[
         ['id', 'name', 'set', 'collector_number', card_hk]
     ]

@@ -1,3 +1,5 @@
+from time import sleep
+
 import cv2
 import imagehash as ih
 import numpy as np
@@ -119,13 +121,15 @@ def find_card(img, thresh_c=5, kernel_size=(3, 3), size_thresh=10000):
 
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_blur = cv2.medianBlur(img_gray, 5)
-    img_thresh = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 5, thresh_c)
-
+    #img_thresh = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 5, thresh_c)
+    img_thresh = cv2.adaptiveThreshold(img_blur, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 199, 5)
     kernel = np.ones(kernel_size, np.uint8)
     img_dilate = cv2.dilate(img_thresh, kernel, iterations=1)
     img_erode = cv2.erode(img_dilate, kernel, iterations=1)
 
-    contours, hierarchy = cv2.findContours(img_erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    # contours, hierarchy = cv2.findContours(img_erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(img_erode, cv2.RETR_EXTERNAL,
+                                           cv2.CHAIN_APPROX_TC89_KCOS)#cv2.CHAIN_APPROX_TC89_L1)  # cv2.CHAIN_APPROX_SIMPLE)
     if contours:
         return _get_candidate_contours(contours, hierarchy, size_thresh)
     return []
@@ -152,7 +156,8 @@ def _build_candidate_contours(contours, hierarchy, size_thresh, stack):
         size = cv2.contourArea(contour)
         perimeter = cv2.arcLength(contour, True)
         approx = cv2.approxPolyDP(contour, 0.04 * perimeter, True)
-        if size >= size_thresh and len(approx) == 4:
+        if size >= 10000 and len(approx) == 4:
+        #if size >= size_thresh and len(approx) == 4:
             contours_rect.append(approx)
         elif i_child != -1:
             stack.append((i_child, hierarchy[0][i_child]))
