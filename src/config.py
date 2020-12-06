@@ -34,6 +34,8 @@ class Config:
     ]
     # Supplemental sets
     set_sup_list = ['hop', 'arc', 'pc2', 'cns', 'cn2', 'e01', 'e02', 'bbd']
+
+    masters = ['ema', 'mm2', 'vma', 'mma', 'me4', 'me3', 'me2', 'me1']
     """"""
 
-    TEMP_SETS = set_2015_list + set_box_list + set_sup_list
+    ALL_SETS = pre_2003_list + set_2003_list + set_2015_list + set_box_list + set_sup_list + masters

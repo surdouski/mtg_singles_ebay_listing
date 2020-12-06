@@ -1,4 +1,3 @@
-import urllib
 from time import sleep
 
 import requests
@@ -39,7 +38,7 @@ def fetch_cards():
 
 
 def get_cards_by_set():
-    temp_sets = Config.pre_2003_list + Config.set_2003_list
+    temp_sets = Config.ALL_SETS
     return [
         load_all_cards_text(f"{DATA_DIR}/csv/{set_name}.csv")
         for set_name in temp_sets
@@ -57,15 +56,7 @@ def fetch_all_cards_text(url='https://api.scryfall.com/cards/search?q=layout:nor
     has_more = True
     cards = []
     while has_more:
-        response = False
-        while not response:
-            try:
-                res_file_dir, http_message = request.urlretrieve(url)
-                response = True
-            except Exception:
-                sleep(5)
-                pass
-
+        res_file_dir, http_message = request.urlretrieve(url)
         with open(res_file_dir, 'r') as res_file:
             res_json = json.loads(res_file.read())
             cards += res_json['data']
@@ -158,7 +149,7 @@ def fetch_card_image(row, out_dir=None, size='png'):
 
 
 def main():
-    sets = Config.TEMP_SETS
+    sets = Config.ALL_SETS
     for set_name in sets:
         csv_name = '%s/csv/%s.csv' % (DATA_DIR, set_name)
         if not os.path.isfile(csv_name):

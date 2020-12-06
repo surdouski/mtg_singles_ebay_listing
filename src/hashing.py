@@ -51,7 +51,7 @@ def save_cards_pool_to_pickle(cards_pool, save_to):
 def update_card_info(alternate_card_format_pool, card_info, card_name, hash_sizes):
     update_card_info_name(card_info, card_name)
     card_image = fetch_card_image(card_info)
-    if card_image:
+    if len(card_image) > 0:
         update_card_info_hashes(card_image, card_info, hash_sizes)
         update_alternate_card_format_pool(alternate_card_format_pool, card_info)
     else:
@@ -76,7 +76,7 @@ def display_warning(card_info):
 
 def fetch_card_image(card_info):
     card_image = fetch_card_image_from_database(card_info)
-    if not card_image:
+    if len(card_image) == 0:
         card_image = fetch_card_image_from_web(card_image, card_info)
     return card_image
 
@@ -96,7 +96,7 @@ def create_empty_cards_pool(card_pool, hash_sizes):
 def fetch_card_image_from_web(card_image, card_info):
     _fetch_card_image_from_web(
         card_info,
-        out_dir=f"{DATA_DIR}/card_img/png/{card_info['set']}"
+        out_dir=f"{DATA_DIR}/card_img/png/{card_info['set']}.png"
     )
     return cv2.imread(card_image_path(card_info))
 
@@ -107,7 +107,7 @@ def fetch_card_image_from_database(card_info):
 
 def card_image_path(card_info):
     return f"{DATA_DIR}/card_img/png/{card_info['set']}/" \
-                 f"{card_info['collector_number']}_{get_valid_filename(card_info['name'])}"
+                 f"{card_info['collector_number']}_{get_valid_filename(card_info['name'])}.png"
 
 
 def fetch_card_names_from_database(card_info):

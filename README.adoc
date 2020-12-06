@@ -54,7 +54,14 @@ POSTAL_CODE='00000'  # [your postal/zip]        # for ebay config
 ##
 ----
 
-(note: pickle's are not 100% updated yet, give it another day before i have it all hashed)
+.Pickle
+-------
+# Pickle path is now set to 'hashed_card_pools/all_sets.pck', however this is not included
+#   in the repo. You can create your own by merging the 3 supplied pickle files in hashed_card_pools
+
+# example code: (after loading from pickles, merge the df's, then load back to new 'all_sets.pck' pickle)
+pd.merge(df_1, df_2, how='outer', on=['id', 'name', 'card_hash_16', 'card_hash_32', 'collector_number', 'set'])
+-------
 
 Once the __ebay.yaml__ and __.env__ files are setup, you can run using the following:
 
